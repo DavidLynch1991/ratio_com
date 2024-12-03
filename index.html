@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RATIO</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: red;
+      padding: 10px 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: black;
+    }
+
+    .content {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .content h1 {
+      color: red;
+      font-size: 3rem;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    .feature-info {
+      margin-top: 40px;
+      font-size: 1.1rem;
+      color: white;
+    }
+
+    .feature-info h2 {
+      font-size: 2rem;
+      color: red;
+    }
+
+    footer {
+      background-color: red;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    footer p {
+      margin: 0;
+      color: black;
+      font-size: 0.9rem;
+    }
+
+    #wrap-it-up-feature {
+      margin: 20px auto;
+      max-width: 800px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <a href="#">RATIO</a>
+    </div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+  
+  <div class="content">
+    <h1>RATIO</h1>
+    <p>Ratio is the fun and social way to stay in the know about the boy-to-girl ratio at your favorite nightlife spots. Whether you're planning a night out or just curious about the scene, Ratio gives you real-time insights into the gender balance at clubs, bars, and parties. Make informed decisions, spark conversations, and experience nightlife with a twist of data-driven fun. Get the inside scoop before you step out – because in nightlife, the right Ratio matters!</p>
+  </div>
+  
+  <!-- Feature Explanation -->
+  <div class="feature-info">
+    <h2>How the "Wrap it Up" Feature Works</h2>
+    <p>
+      The "Wrap it Up" feature lets you track the **favorable ratio** in real-time as the circle moves across the screen. The more favorable the ratio (closer to your preferred gender balance), the more **"Wrap it Up" badges** you can earn.
+    </p>
+    <h3>How to Use the Feature:</h3>
+    <ul>
+      <li><strong>Step 1:</strong> Click and hold your mouse on the canvas below to make the circle move.</li>
+      <li><strong>Step 2:</strong> As the circle moves from left to right, the favorable ratio increases.</li>
+      <li><strong>Step 3:</strong> Collect badges by achieving higher favorable ratios!</li>
+    </ul>
+    <p>The goal is to earn as many badges as possible by increasing the favorable ratio. This could lead to unlocking **rewards** or special actions on your website.</p>
+  </div>
+
+  <!-- p5.js canvas container -->
+  <div id="wrap-it-up-feature"></div>
+
+  <footer>
+    <p>&copy; 2024 MyWebsite. All rights reserved.</p>
+  </footer>
+
+  <!-- p5.js Script for animation -->
+  <script>
+    // Position variables
+    let circlePositionX = 200;
+    let circlePositionY = 200;
+
+    // Speed variables
+    let circleSpeedX = 2;
+    let circleSpeedY = 3;
+
+    // Radius variable
+    let circleRadius = 25;
+
+    // Hue variable
+    let circleHue = 0;
+
+    // Variables for badges and favorable ratio
+    let favorableRatio = 0;
+    let badgesEarned = 0;
+
+    function setup() {
+      let canvas = createCanvas(windowWidth, 400);
+      canvas.parent("wrap-it-up-feature");
+      background(255);
+      ellipseMode(RADIUS);
+      noStroke();
+      fill(128);
+      rect(0, 0, 100, height); // Static rectangles
+      rect(width - 100, 0, 100, height); // Static rectangles
+      colorMode(HSB);
+      strokeWeight(4);
+    }
+
+    function draw() {
+      stroke(circleHue, 80, 90);
+      fill(circlePositionX >= 100 && circlePositionX <= width - 100 ? 0 : 255);
+      circle(circlePositionX, circlePositionY, circleRadius);
+
+      if (mouseIsPressed) {
+        circlePositionX += circleSpeedX;
+        circlePositionY += circleSpeedY;
+        circleHue = (circleHue + 1) % 360;
+
+        if (circlePositionX > width / 2) {
+          favorableRatio += 0.01;
+          if (favorableRatio >= badgesEarned + 1) {
+            badgesEarned++;
+          }
+        }
+      }
+
+      if (circlePositionX < circleRadius || circlePositionX > width - circleRadius) {
+        circleSpeedX = -circleSpeedX;
+      }
+      if (circlePositionY < circleRadius || circlePositionY > height - circleRadius) {
+        circleSpeedY = -circleSpeedY;
+      }
+
+      fill(0);
+      noStroke();
+      textSize(16);
+      textAlign(LEFT, TOP);
+      text(`Favorable Ratio: ${favorableRatio.toFixed(2)}`, 10, 10);
+      text(`Badges Earned: ${badgesEarned}`, 10, 30);
+    }
+  </script>
+</body>
+</html>
